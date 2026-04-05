@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dima Bot GUI</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            background-color: #0f0f12;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 15px;
+        }
+        .card {
+            background: #1a1a1f;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #2d2d35;
+        }
+        .title {
+            color: #a855f7; /* Фиолетовый как на скрине */
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        input {
+            width: 100%;
+            background: #25252b;
+            border: 1px solid #3f3f46;
+            padding: 10px;
+            border-radius: 6px;
+            color: white;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .btn-main {
+            background: linear-gradient(135deg, #a855f7, #6b21a8);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="title">📍 Подключение</div>
+        <input type="text" id="ip" placeholder="IP Сервера (например: aternos.me)">
+        <input type="number" id="port" placeholder="Порт">
+    </div>
+
+    <div class="card">
+        <div class="title">🧪 BETA Функции</div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Ghost Mode (Физика)</span>
+            <input type="checkbox" id="ghost" style="width: auto;">
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+            <span>Авто-регистрация</span>
+            <input type="checkbox" id="auth" style="width: auto;" checked>
+        </div>
+    </div>
+
+    <button class="btn-main" onclick="sendData()">ЗАПУСТИТЬ АТАКУ</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Развернуть на весь экран
+
+        function sendData() {
+            let data = {
+                ip: document.getElementById('ip').value,
+                port: document.getElementById('port').value,
+                ghost: document.getElementById('ghost').checked
+            };
+            tg.sendData(JSON.stringify(data)); // Отправляем данные боту
+        }
+    </script>
+</body>
+</html>
