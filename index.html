@@ -75,5 +75,30 @@
             tg.sendData(JSON.stringify(data));
         }
     </script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand(); 
+
+    // Функция сбора данных из твоих полей
+    function applyChanges() {
+        const data = {
+                    ip: document.getElementById('ip_input').value,     
+            port: document.getElementById('port_input').value, 
+            msg: document.getElementById('text_input').value,  
+            count: document.getElementById('count_input').value 
+        };
+        
+        
+
+        // Отправка в Python
+        tg.sendData(JSON.stringify(data));
+        tg.close();
+    }
+
+    // Привязка к кнопке (проверь, чтобы id кнопки в HTML был 'apply_btn')
+    document.getElementById('apply_btn').onclick = applyChanges;
+</script>
 </body>
 </html>
