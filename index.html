@@ -3,93 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dima Bot GUI</title>
+    <title>Dima Bot V54.1 Pro</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            background-color: #0f0f12;
-            color: #e0e0e0;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 15px;
+        body { background-color: #0f0f12; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
+        .card { background: #1a1a1f; border-radius: 12px; padding: 15px; margin-bottom: 12px; border: 1px solid #2d2d35; }
+        .title { color: #a855f7; font-size: 14px; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #2d2d35; padding-bottom: 5px; }
+        .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        label { font-size: 13px; color: #9ca3af; }
+        input[type="text"], input[type="number"], select { 
+            background: #25252b; border: 1px solid #3f3f46; padding: 8px; border-radius: 6px; color: white; width: 60%; font-size: 13px;
         }
-        .card {
-            background: #1a1a1f;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid #2d2d35;
-        }
-        .title {
-            color: #a855f7; /* Фиолетовый как на скрине */
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-        input {
-            width: 100%;
-            background: #25252b;
-            border: 1px solid #3f3f46;
-            padding: 10px;
-            border-radius: 6px;
-            color: white;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-        .btn-main {
-            background: linear-gradient(135deg, #a855f7, #6b21a8);
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .status-dot {
-            height: 10px;
-            width: 10px;
-            background-color: #22c55e;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
+        input[type="checkbox"] { width: 18px; height: 18px; accent-color: #a855f7; }
+        .btn-save { 
+            background: linear-gradient(135deg, #a855f7, #6b21a8); color: white; border: none; 
+            padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
         }
     </style>
 </head>
 <body>
     <div class="card">
         <div class="title">📍 Подключение</div>
-        <input type="text" id="ip" placeholder="IP Сервера (например: aternos.me)">
-        <input type="number" id="port" placeholder="Порт">
+        <div class="row"><label>IP Сервера</label><input type="text" id="ip" placeholder="aternos.me"></div>
+        <div class="row"><label>Порт</label><input type="number" id="port" value="25565"></div>
+        <div class="row"><label>Версия</label>
+            <select id="ver">
+                <option value="1.21.4">1.21.4</option>
+                <option value="1.16.5">1.16.5</option>
+            </select>
+        </div>
     </div>
 
     <div class="card">
-        <div class="title">🧪 BETA Функции</div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Ghost Mode (Физика)</span>
-            <input type="checkbox" id="ghost" style="width: auto;">
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-            <span>Авто-регистрация</span>
-            <input type="checkbox" id="auth" style="width: auto;" checked>
-        </div>
+        <div class="title">👥 Настройки Ботов</div>
+        <div class="row"><label>Количество</label><input type="number" id="count" value="8"></div>
+        <div class="row"><label>Префикс ника</label><input type="text" id="prefix" value="Troll_"></div>
+        <div class="row"><label>Текст/Команда</label><input type="text" id="cmd" value="/register Pass123 Pass123"></div>
     </div>
 
-    <button class="btn-main" onclick="sendData()">ЗАПУСТИТЬ АТАКУ</button>
+    <div class="card">
+        <div class="title">⚡ Тайминги (сек)</div>
+        <div class="row"><label>Вход (Join)</label><input type="number" id="j_delay" step="0.1" value="1.2"></div>
+        <div class="row"><label>Спам (Msg)</label><input type="number" id="m_delay" step="0.1" value="2.5"></div>
+    </div>
+
+    <div class="card">
+        <div class="title">🧪 Дополнительно</div>
+        <div class="row"><span>Ghost Mode (Физика)</span><input type="checkbox" id="ghost" checked></div>
+        <div class="row"><span>Random Suffix</span><input type="checkbox" id="rnd" checked></div>
+    </div>
+
+    <button class="btn-save" onclick="sendData()">ПРИМЕНИТЬ НАСТРОЙКИ</button>
 
     <script>
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Развернуть на весь экран
-
+        tg.expand();
         function sendData() {
             let data = {
                 ip: document.getElementById('ip').value,
                 port: document.getElementById('port').value,
-                ghost: document.getElementById('ghost').checked
+                ver: document.getElementById('ver').value,
+                count: document.getElementById('count').value,
+                prefix: document.getElementById('prefix').value,
+                cmd: document.getElementById('cmd').value,
+                j_delay: document.getElementById('j_delay').value,
+                m_delay: document.getElementById('m_delay').value,
+                ghost: document.getElementById('ghost').checked,
+                rnd: document.getElementById('rnd').checked
             };
-            tg.sendData(JSON.stringify(data)); // Отправляем данные боту
+            tg.sendData(JSON.stringify(data));
         }
     </script>
 </body>
